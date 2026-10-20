@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lab: IAM Privilege Escalation (PassRole Chain)</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+
+    <div class="container">
+      <nav>
+        <a href="../index.html">Home</a>
+        <a class="active" href="../projects.html">Projects</a>
+        <a href="../resume.html">Resume</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+
+      <section class="hero">
+        <span class="kicker">Lab 03 · IAM Escalation</span>
+        <h1>IAM Privilege Escalation (PassRole Chain)</h1>
+        <p class="subtitle">
+          A defender-focused breakdown of how overly-broad role passing enables privilege escalation — and how to prevent and detect the chain.
+        </p>
+      </section>
+    </div>
+
+    <div class="lab-layout">
+      <aside class="toc">
+        <h3>On this page</h3>
+        <ul>
+          <li><a href="#executive">Executive summary</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#misconfig">The misconfiguration</a></li>
+          <li><a href="#danger">Why it’s dangerous</a></li>
+          <li><a href="#simulation">Simulation (lab-only)</a></li>
+          <li><a href="#detection">Detection strategy</a></li>
+          <li><a href="#remediation">Remediation</a></li>
+          <li><a href="#hardening">Hardening checklist</a></li>
+          <li><a href="#lessons">Lessons learned</a></li>
+          <li><a href="#repo">GitHub repository</a></li>
+        </ul>
+      </aside>
+
+      <main class="lab-content">
+
+        <section class="card" id="executive">
+          <h2 style="margin-top:0;">Executive summary</h2>
+          <ul>
+            <li><strong>What broke:</strong> Overly-broad role passing allowed unintended privilege escalation.</li>
+            <li><strong>Why it matters:</strong> escalation chains often look legitimate in logs.</li>
+            <li><strong>How to catch it:</strong> alert on role passing + correlate assume-role activity.</li>
+            <li><strong>How to prevent it:</strong> least privilege + scoped trust + org guardrails.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="architecture">
+          <h2 style="margin-top:0;">Architecture</h2>
+          <p>
+            Minimal lab roles:
+          </p>
+          <ul>
+            <li><strong>DevRole:</strong> limited expected permissions.</li>
+            <li><strong>HighPrivRole:</strong> tightly controlled administrative role.</li>
+            <li><strong>Service surface:</strong> managed service that assumes execution roles.</li>
+          </ul>
+          <p><em>Diagram placeholder:</em> DevRole → Service → HighPrivRole.</p>
+        </section>
+
+        <section class="card" id="misconfig">
+          <h2 style="margin-top:0;">The misconfiguration</h2>
+          <ul>
+            <li>Role passing scoped to wildcard resources.</li>
+            <li>Deployment roles reused for runtime execution.</li>
+            <li>Temporary elevated permissions never removed.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="danger">
+          <h2 style="margin-top:0;">Why this is dangerous</h2>
+          <ul>
+            <li><strong>Privilege jump:</strong> low-priv identity gains high-impact permissions.</li>
+            <li><strong>Stealth factor:</strong> appears as service activity, not direct login.</li>
+            <li><strong>Blast radius:</strong> determined by high-priv role scope.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="simulation">
+          <h2 style="margin-top:0;">Exploitation simulation (isolated lab)</h2>
+          <ul>
+            <li>Attempt escalation in a dedicated lab account.</li>
+            <li>Capture CloudTrail sequence: configure → assume → action.</li>
+            <li>Revert immediately after evidence capture.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="detection">
+          <h2 style="margin-top:0;">Detection strategy</h2>
+          <ul>
+            <li><strong>Primitive alerts:</strong> role passing and policy changes.</li>
+            <li><strong>Correlation:</strong> config change followed by assume-role.</li>
+            <li><strong>Sensitive action monitoring:</strong> IAM, KMS, data access APIs.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="remediation">
+          <h2 style="margin-top:0;">Remediation</h2>
+          <ul>
+            <li>Scope role passing to specific roles and services.</li>
+            <li>Use permission boundaries.</li>
+            <li>Separate deployment and execution roles.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="hardening">
+          <h2 style="margin-top:0;">Hardening checklist</h2>
+          <ul>
+            <li>Org-level guardrails blocking unsafe patterns.</li>
+            <li>Reduce permissions on high-priv roles.</li>
+            <li>Require review for trust/policy changes.</li>
+            <li>Keep correlation-based alerts active.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="lessons">
+          <h2 style="margin-top:0;">Lessons learned</h2>
+          <ul>
+            <li>Most IAM incidents are chains of reasonable permissions.</li>
+            <li>Prevention first, detection second.</li>
+            <li>Correlation across time and identity is critical.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="repo">
+          <h2 style="margin-top:0;">GitHub Repository</h2>
+          <p><a href="#">Add repo link</a></p>
+        </section>
+
+        <div class="actions" style="margin-top:16px;">
+          <a class="btn" href="cloudtrail-logging-gaps.html">← Previous Lab</a>
+          <a class="btn btn-primary" href="../projects.html">Back to Projects →</a>
+        </div>
+      </main>
+    </div>
+
+    <div class="container">
+      <footer>© 2026 Nojus Niuklys</footer>
+    </div>
+
+  </body>
+</html>

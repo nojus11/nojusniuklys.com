@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lab: S3 Data Exposure</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+
+    <div class="container">
+      <nav>
+        <a href="../index.html">Home</a>
+        <a class="active" href="../projects.html">Projects</a>
+        <a href="../resume.html">Resume</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+
+      <section class="hero">
+        <span class="kicker">Lab 01 · Data Exposure</span>
+        <h1>S3 Data Exposure (Unintended Public Access)</h1>
+        <p class="subtitle">
+          A practical reference for how S3 exposure happens, what the blast radius looks like, and how to detect and prevent it.
+        </p>
+      </section>
+    </div>
+
+    <div class="lab-layout">
+      <aside class="toc">
+        <h3>On this page</h3>
+        <ul>
+          <li><a href="#executive">Executive summary</a></li>
+          <li><a href="#scope">Scope & safety</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#misconfig">Misconfiguration</a></li>
+          <li><a href="#danger">Why it’s dangerous</a></li>
+          <li><a href="#simulation">Simulation (lab-only)</a></li>
+          <li><a href="#detection">Detection strategy</a></li>
+          <li><a href="#remediation">Remediation</a></li>
+          <li><a href="#hardening">Hardening checklist</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="lab-content">
+
+        <section class="card" id="executive">
+          <h2 style="margin-top:0;">Executive summary</h2>
+          <ul>
+            <li><strong>What broke:</strong> S3 access controls allowed unintended public reads.</li>
+            <li><strong>Why it matters:</strong> data exposure is often silent and scalable (scraping).</li>
+            <li><strong>How to catch it:</strong> alert on policy/ACL changes and unexpected object reads.</li>
+            <li><strong>How to prevent it:</strong> Block Public Access + least-privilege policies + guardrails.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="scope">
+          <h2 style="margin-top:0;">Scope & safety</h2>
+          <p>
+            This is designed as a safe lab concept:
+          </p>
+          <ul>
+            <li>Use a dedicated test environment (no real data).</li>
+            <li>Only synthetic objects (e.g., dummy text files).</li>
+            <li>Teardown after testing to minimize cost and risk.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="architecture">
+          <h2 style="margin-top:0;">Architecture</h2>
+          <p>
+            Minimal setup: one S3 bucket, a few sample objects, and logging/visibility enabled.
+            Optional: central log bucket + Security Hub integration.
+          </p>
+          <p><em>Diagram placeholder:</em> add a simple box diagram here later.</p>
+        </section>
+
+        <section class="card" id="misconfig">
+          <h2 style="margin-top:0;">The misconfiguration</h2>
+          <p>
+            Common real-world causes:
+          </p>
+          <ul>
+            <li>Public access granted via bucket policy during “quick testing” and never reverted.</li>
+            <li>Over-broad principals (e.g., “*”) or permissive conditions.</li>
+            <li>Confusion between ACLs, bucket policy, and Block Public Access settings.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="danger">
+          <h2 style="margin-top:0;">Why this is dangerous</h2>
+          <ul>
+            <li><strong>Data exposure:</strong> sensitive documents, exports, logs, backups.</li>
+            <li><strong>Recon:</strong> leaked configs/keys can unlock deeper compromise.</li>
+            <li><strong>Scale:</strong> automated scraping can download large volumes quickly.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="simulation">
+          <h2 style="margin-top:0;">Exploitation simulation (isolated lab)</h2>
+          <p>
+            Kept intentionally high-level and defender-focused.
+            The goal is to validate what “exposure” looks like and what your telemetry captures.
+          </p>
+          <ul>
+            <li>Confirm an unauthenticated/low-priv principal can read a known test object.</li>
+            <li>Observe which logs record the access and what fields you can alert on.</li>
+            <li>Verify that once fixed, the same access attempt fails (regression check).</li>
+          </ul>
+        </section>
+
+        <section class="card" id="detection">
+          <h2 style="margin-top:0;">Detection strategy</h2>
+          <ul>
+            <li><strong>Change detection:</strong> alert on bucket policy/ACL updates and public-access setting changes.</li>
+            <li><strong>Access detection:</strong> watch for unusual read patterns on sensitive prefixes.</li>
+            <li><strong>Config monitoring:</strong> continuously evaluate buckets for public exposure.</li>
+          </ul>
+          <p>
+            You’re aiming for both: (1) “someone made it public,” and (2) “someone accessed it.”
+          </p>
+        </section>
+
+        <section class="card" id="remediation">
+          <h2 style="margin-top:0;">Remediation</h2>
+          <ul>
+            <li>Enable and enforce Block Public Access (account + bucket).</li>
+            <li>Replace permissive policies with least-privilege statements.</li>
+            <li>Rotate/remove any data that should never have been exposed.</li>
+          </ul>
+        </section>
+
+        <section class="card" id="hardening">
+          <h2 style="margin-top:0;">Hardening checklist</h2>
+          <ul>
+            <li>Guardrails to prevent public bucket policies (policy checks / org controls).</li>
+            <li>Centralized logging + alerts for high-risk storage changes.</li>
+            <li>Tagging + ownership on buckets (who is responsible when alerts fire?).</li>
+            <li>Periodic review of buckets and access analyzer findings.</li>
+          </ul>
+        </section>
+
+        <!-- GitHub moved into main content -->
+        <section class="card">
+          <h2 style="margin-top:0;">GitHub Repository</h2>
+          <p><a href="#">Add repo link</a></p>
+        </section>
+
+        <div class="actions" style="margin-top:16px;">
+          <a class="btn" href="../projects.html">← Back to Projects</a>
+          <a class="btn btn-primary" href="cloudtrail-logging-gaps.html">Next Lab →</a>
+        </div>
+      </main>
+    </div>
+
+    <div class="container">
+      <footer>© 2026 Nojus Niuklys</footer>
+    </div>
+
+  </body>
+</html>
