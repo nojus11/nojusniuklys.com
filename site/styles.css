@@ -53,7 +53,8 @@ nav a:hover {
     color: var(--accent);
 }
 
-nav a.active {
+/* aria-current tells screen readers which page this is, too */
+nav a[aria-current="page"] {
     border-bottom: 2px solid var(--accent);
     padding-bottom: 6px;
 }
