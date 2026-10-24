@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
-
 :root {
     --bg: #111111;
     --surface: #1c1c1c;
@@ -22,16 +20,19 @@ html {
 }
 
 body {
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    /* each device's own UI font: nothing to download, no third parties */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background-color: var(--bg);
     color: var(--text);
     line-height: 1.7;
 }
 
+/* 900px of content plus 20px padding each side; the padding keeps text
+   off the screen edge on phones */
 .container {
-    max-width: 900px;
+    max-width: 940px;
     margin: 0 auto;
-    padding: 40px 0;
+    padding: 40px 20px;
 }
 
 nav {
@@ -52,6 +53,16 @@ nav a:hover {
     color: var(--accent);
 }
 
+nav a.active {
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 6px;
+}
+
+/* headings sit tighter than body text, so wrapped titles don't gape */
+h1, h2, h3 {
+    line-height: 1.25;
+}
+
 h1 {
     font-size: 2.2rem;
     margin-bottom: 20px;
@@ -67,11 +78,18 @@ p {
     color: var(--muted);
 }
 
-.lab-layout {
-  display: grid;
-  grid-template-columns: 1fr 900px 1fr;
-  gap: 40px;
-  align-items: start;
+/* brighter than body text, so links stand out as links */
+a {
+    color: var(--text);
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .card {
@@ -82,22 +100,12 @@ p {
     margin-bottom: 20px;
 }
 
-
-.lab-content {
-  grid-column: 2;
+.card h2 {
+    margin-top: 0;
 }
 
 .card h3 {
     margin-bottom: 10px;
-}
-
-a {
-    color: var(--accent);
-}
-
-ul {
-    margin-left: 20px;
-    margin-bottom: 20px;
 }
 
 footer {
@@ -108,105 +116,114 @@ footer {
     font-size: 0.9rem;
 }
 
-
-
-
-/* --- Lab layout helpers --- */
+/* --- Project pages --- */
 .hero {
-  padding: 28px 0 10px;
-  margin-bottom: 18px;
+    padding: 28px 0 10px;
+    margin-bottom: 18px;
 }
 
 .kicker {
-  display: inline-block;
-  font-size: 0.85rem;
-  color: var(--muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 .subtitle {
-  max-width: 70ch;
-  color: var(--muted);
+    max-width: 70ch;
+    color: var(--muted);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  align-items: start;
+/* Phones and laptops: one centered column, same width as .container. */
+.lab-layout {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
-
-.col-4, .col-8 { width: 100%; }
 
 .toc {
-  grid-column: 1;
-  justify-self: end;
-  width: 220px;
-  position: sticky;
-  top: 40px;
+    display: none;
 }
 
 .toc h3 {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .toc ul {
-  list-style: none;
-  margin-left: 0;
-  padding-left: 0;
+    list-style: none;
+    margin-left: 0;
 }
 
 .toc li {
-  margin: 10px 0;
+    margin: 10px 0;
 }
 
 .toc a {
-  color: var(--muted);
-  text-decoration: none;
+    color: var(--muted);
+    text-decoration: none;
 }
 
 .toc a:hover {
-  color: var(--text);
+    color: var(--text);
 }
 
-/* Buttons / actions */
+/* Wide screens: the "On this page" list sits beside the content.
+   1440px = 900px content + room for the 220px list and the gaps. */
+@media (min-width: 1440px) {
+    .lab-layout {
+        display: grid;
+        grid-template-columns: 1fr 900px 1fr;
+        gap: 40px;
+        align-items: start;
+        max-width: none;
+        padding: 0;
+    }
+
+    .toc {
+        display: block;
+        grid-column: 1;
+        justify-self: end;
+        width: 220px;
+        position: sticky;
+        top: 40px;
+    }
+
+    .lab-content {
+        grid-column: 2;
+    }
+}
+
+/* Buttons */
 .actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
 }
 
 .btn {
-  display: inline-block;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  text-decoration: none;
-  color: var(--text);
-  background: transparent;
+    display: inline-block;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    background: transparent;
 }
 
 .btn:hover {
-  border-color: var(--accent);
+    border-color: var(--accent);
 }
 
 .btn-primary {
-  background: var(--text);
-  color: var(--bg);
-  border-color: var(--text);
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
-}
-
-/* Responsive two-column layout on desktop */
-
-
-nav a.active {
-  color: var(--text);
-  border-bottom: 2px solid var(--accent);
-  padding-bottom: 6px;
+    color: var(--bg);
+    opacity: 0.9;
 }
