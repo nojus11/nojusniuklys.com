@@ -138,6 +138,11 @@ footer {
     border-radius: 6px;
 }
 
+.diagram-note {
+    margin: 8px 0 0;
+    font-size: 0.85rem;
+}
+
 /* Phones and laptops: one centered column, same width as .container. */
 .lab-layout {
     max-width: 940px;
