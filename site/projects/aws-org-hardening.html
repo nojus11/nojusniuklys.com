@@ -71,12 +71,10 @@
                         Guardrails flow down from management. Logs and security events flow
                         into security, out of reach of anyone who takes over another account.
                     </p>
-                    <!-- links to the full-size file: too small to read on phones -->
-                    <a href="/img/aws-org-architecture.svg">
-                        <img class="diagram" src="/img/aws-org-architecture.svg"
-                             alt="Guardrails (SCPs) flow down from management to live, lab, security and an empty quarantine OU; all four accounts send their logs and security events into security, which emails me alerts.">
-                    </a>
-                    <p class="diagram-note">Tap the diagram to open it larger.</p>
+                    <!-- No link to the file itself: opened on its own, the strict CSP
+                         blocks the SVG's inline styles. Vector, so pinch-zoom stays sharp. -->
+                    <img class="diagram" src="/img/aws-org-architecture.svg"
+                         alt="Guardrails (SCPs) flow down from management to live, lab, security and an empty quarantine OU; all four accounts send their logs and security events into security, which emails me alerts.">
                 </section>
 
                 <section class="card" id="built">

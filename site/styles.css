@@ -138,18 +138,6 @@ footer {
     border-radius: 6px;
 }
 
-/* only on phones: on wider screens the diagram is already near full size */
-.diagram-note {
-    margin: 8px 0 0;
-    font-size: 0.85rem;
-}
-
-@media (min-width: 700px) {
-    .diagram-note {
-        display: none;
-    }
-}
-
 /* Phones and laptops: one centered column, same width as .container. */
 .lab-layout {
     max-width: 940px;

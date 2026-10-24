@@ -1,0 +1,5 @@
+Contact: https://github.com/nojus11/nojusniuklys.com/security/advisories/new
+Contact: mailto:nojniu@gmail.com
+Expires: 2027-10-01T00:00:00Z
+Preferred-Languages: en
+Canonical: https://nojusniuklys.com/.well-known/security.txt
