@@ -1,4 +1,7 @@
 :root {
+    /* dark-only site: the browser (scrollbars, the diagram's own dark
+       colors) follows suit */
+    color-scheme: dark;
     --bg: #111111;
     --surface: #1c1c1c;
     --text: #e5e5e5;
@@ -123,18 +126,28 @@ footer {
     margin-bottom: 18px;
 }
 
-.kicker {
-    display: inline-block;
-    font-size: 0.85rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-}
-
 .subtitle {
     max-width: 70ch;
     color: var(--muted);
+}
+
+.diagram {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* only on phones: on wider screens the diagram is already near full size */
+.diagram-note {
+    margin: 8px 0 0;
+    font-size: 0.85rem;
+}
+
+@media (min-width: 700px) {
+    .diagram-note {
+        display: none;
+    }
 }
 
 /* Phones and laptops: one centered column, same width as .container. */

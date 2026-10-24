@@ -1,110 +1,44 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Projects · Nojus Niuklys</title>
-    <meta name="description" content="Cloud security and infrastructure projects by Nojus Niuklys, built and tested for real.">
-    <link rel="canonical" href="https://nojusniuklys.com/projects.html">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Projects · Nojus Niuklys">
-    <meta property="og:description" content="Cloud security and infrastructure projects by Nojus Niuklys, built and tested for real.">
-    <meta property="og:url" content="https://nojusniuklys.com/projects.html">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="/styles.css">
-  </head>
-  <body>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Projects · Nojus Niuklys</title>
+        <meta name="description" content="Cloud security and infrastructure projects by Nojus Niuklys, built and tested for real.">
+        <link rel="canonical" href="https://nojusniuklys.com/projects.html">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Projects · Nojus Niuklys">
+        <meta property="og:description" content="Cloud security and infrastructure projects by Nojus Niuklys, built and tested for real.">
+        <meta property="og:url" content="https://nojusniuklys.com/projects.html">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <a href="/">Home</a>
+                <a href="/projects.html" aria-current="page">Projects</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
 
-    <div class="container">
-      <nav>
-        <a href="/">Home</a>
-        <a href="/projects.html" aria-current="page">Projects</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
+            <h1>Projects</h1>
 
-      <h1>Projects</h1>
+            <!-- One card per project, newest first. Group into sections once
+                 there are enough projects to need it. -->
+            <div class="card">
+                <h3>Hardening a Multi-Account AWS Organization</h3>
+                <p>
+                    A real environment, run like production: four AWS accounts brought
+                    under Terraform, hardened, monitored and tested with drills.
+                </p>
+                <p>
+                    <a href="/projects/aws-org-hardening.html">Read more →</a>
+                    &nbsp;·&nbsp;
+                    <a href="https://github.com/nojus11/aws-org-hardening">Code →</a>
+                </p>
+            </div>
 
-      <p>
-        <a href="#labs">Cloud Security Labs</a>
-        &nbsp;·&nbsp;
-        <a href="#other">Other Projects</a>
-      </p>
-
-      <!-- ===================== -->
-      <!-- Cloud Security Labs   -->
-      <!-- ===================== -->
-
-      <h2 id="labs">Cloud Security Labs</h2>
-
-      <p>
-        A structured series of hands-on AWS security labs focused on misconfiguration
-        patterns, detection signals, and infrastructure hardening techniques.
-        Each lab documents the setup, impact, detection approach, and remediation.
-      </p>
-
-      <div class="card">
-        <h3>Lab 1: S3 Public Bucket Exposure</h3>
-        <p>
-          Demonstrates how unintended public access can occur in Amazon S3,
-          the resulting risk, and how to detect and prevent data exposure.
-        </p>
-        <p>
-          <a href="projects/s3-public-bucket.html">View Lab →</a>
-          &nbsp;·&nbsp;
-          <a href="https://github.com/yourusername/s3-public-bucket-lab">Code →</a>
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Lab 2: CloudTrail Logging Gaps</h3>
-        <p>
-          Explores the impact of incomplete or misconfigured logging,
-          how visibility gaps affect detection, and how to properly
-          secure and validate audit trails.
-        </p>
-        <p>
-          <a href="projects/cloudtrail-logging-gaps.html">View Lab →</a>
-          &nbsp;·&nbsp;
-          <a href="https://github.com/yourusername/cloudtrail-logging-lab">Code →</a>
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Lab 3: IAM PassRole Privilege Escalation</h3>
-        <p>
-          Examines how improper IAM role permissions can allow privilege
-          escalation and outlines detection and least-privilege remediation strategies.
-        </p>
-        <p>
-          <a href="projects/iam-passrole-privesc.html">View Lab →</a>
-          &nbsp;·&nbsp;
-          <a href="https://github.com/yourusername/iam-passrole-lab">Code →</a>
-        </p>
-      </div>
-
-      <!-- ===================== -->
-      <!-- Other Projects        -->
-      <!-- ===================== -->
-
-      <h2 id="other">Other Projects</h2>
-
-      <p>
-        Selected engineering work outside of the cloud security lab series.
-      </p>
-
-      <div class="card">
-        <h3>AWS Log Triage Script</h3>
-        <p>
-          Python-based utility for summarizing CloudTrail events and
-          identifying potentially risky IAM configuration changes.
-        </p>
-        <p>
-          <a href="https://github.com/yourusername/aws-log-triage">Code →</a>
-        </p>
-      </div>
-
-      <footer>© 2026 Nojus Niuklys</footer>
-    </div>
-
-  </body>
+            <footer>© 2026 Nojus Niuklys</footer>
+        </div>
+    </body>
 </html>

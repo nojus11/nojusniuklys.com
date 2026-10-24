@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Hardening a Multi-Account AWS Organization · Nojus Niuklys</title>
+        <meta name="description" content="A real AWS organization, run like production: four accounts brought under Terraform, hardened, monitored and tested with drills.">
+        <link rel="canonical" href="https://nojusniuklys.com/projects/aws-org-hardening.html">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="Hardening a Multi-Account AWS Organization">
+        <meta property="og:description" content="A real AWS organization, run like production: four accounts brought under Terraform, hardened, monitored and tested with drills.">
+        <meta property="og:url" content="https://nojusniuklys.com/projects/aws-org-hardening.html">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <nav>
+                <a href="/">Home</a>
+                <a href="/projects.html" aria-current="page">Projects</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+
+            <section class="hero">
+                <h1>Hardening a Multi-Account AWS Organization</h1>
+                <p class="subtitle">
+                    A real environment, run like production. I took an AWS organization
+                    I had set up by hand, brought it under Terraform, and hardened all
+                    four accounts step by step, testing that every protection actually
+                    works.
+                </p>
+            </section>
+        </div>
+
+        <div class="lab-layout">
+            <aside class="toc">
+                <h3>On this page</h3>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#built">What I built</a></li>
+                    <li><a href="#tested">Tested, not assumed</a></li>
+                    <li><a href="#results">Results</a></li>
+                    <li><a href="#limits">Limits</a></li>
+                    <li><a href="#code">Code and full write-up</a></li>
+                </ul>
+            </aside>
+
+            <main class="lab-content">
+                <section class="card" id="overview">
+                    <h2>Overview</h2>
+                    <p>
+                        I started with three accounts set up by hand in the console and
+                        almost no security: no working audit trail, no threat detection,
+                        no budget alarm, and leftovers from old experiments. I imported the
+                        organization into Terraform, added a dedicated security account,
+                        then hardened everything: fixing what I found, adding the security
+                        services and guardrails AWS recommends, and testing each one.
+                    </p>
+                    <ul>
+                        <li><strong>management:</strong> runs the organization, single sign-on, billing and the policies every other account follows. No workloads.</li>
+                        <li><strong>live:</strong> production, including this website.</li>
+                        <li><strong>lab:</strong> deliberate experiments, logged and watched like everything else.</li>
+                        <li><strong>security:</strong> the audit trail, the security tooling and the alerting hub.</li>
+                    </ul>
+                </section>
+
+                <section class="card" id="architecture">
+                    <h2>Architecture</h2>
+                    <p>
+                        Guardrails flow down from management. Logs and security events flow
+                        into security, out of reach of anyone who takes over another account.
+                    </p>
+                    <!-- links to the full-size file: too small to read on phones -->
+                    <a href="/img/aws-org-architecture.svg">
+                        <img class="diagram" src="/img/aws-org-architecture.svg"
+                             alt="Guardrails (SCPs) flow down from management to live, lab, security and an empty quarantine OU; all four accounts send their logs and security events into security, which emails me alerts.">
+                    </a>
+                    <p class="diagram-note">Tap the diagram to open it larger.</p>
+                </section>
+
+                <section class="card" id="built">
+                    <h2>What I built</h2>
+                    <ul>
+                        <li><strong>Identity:</strong> single sign-on with MFA is the only way in. No IAM users or long-lived keys, and member accounts have no root passwords. I also found and removed two leftover roles that let one account take over the whole organization.</li>
+                        <li><strong>Logs as evidence:</strong> one organization-wide trail into a log archive that can't be quietly changed: Object Lock, my own encryption key, and signed digests.</li>
+                        <li><strong>Detection:</strong> GuardDuty in all 17 regions, Security Hub CSPM and AWS Config, with twelve rules that email me within minutes.</li>
+                        <li><strong>Guardrails:</strong> organization policies that even account admins can't override: one region, small instances only, the baseline locked on, logs and alerts protected, and only my organization can reach my data.</li>
+                        <li><strong>Changes and drift:</strong> every push is checked (format, Checkov, gitleaks), and a daily read-only plan in all four accounts catches anything changed outside the code.</li>
+                        <li><strong>Respond and recover:</strong> new access keys switched off in seconds, a quarantine that freezes an account in one move, Terraform state nobody can wipe, and a tested break-glass path.</li>
+                    </ul>
+                </section>
+
+                <section class="card" id="tested">
+                    <h2>Tested, not assumed</h2>
+                    <ul>
+                        <li>Every alert tested end to end with real events, not simulations.</li>
+                        <li>A staged 3 a.m. incident, run using only the runbook: contained, investigated, released. It found three gaps, now fixed or written down.</li>
+                        <li>Terraform state overwritten with junk, then restored to the last good version.</li>
+                        <li>A bucket locked with a deny-everyone policy, opened again through break-glass.</li>
+                        <li>A management root sign-in, and cutting off my own single sign-on user: both alerted.</li>
+                    </ul>
+                </section>
+
+                <section class="card" id="results">
+                    <h2>Results</h2>
+                    <ul>
+                        <li><strong>61 findings,</strong> every critical, high and medium one fixed. The critical one, a path from one account to the whole organization, I found by reviewing the roles myself, before running any scanner.</li>
+                        <li><strong>Scanners as a second opinion:</strong> Prowler's failed checks down by a third (402 → 271), high-severity failures halved (79 → 39).</li>
+                        <li><strong>Code:</strong> Checkov passes 168 checks with none failing; every skipped check has its reason in the code.</li>
+                    </ul>
+                </section>
+
+                <section class="card" id="limits">
+                    <h2>Limits</h2>
+                    <ul>
+                        <li>Management is the one account organization policies can't reach. There it's single sign-on with MFA, alerts and break-glass.</li>
+                        <li>My admin role is broad (AdministratorAccess), limited by MFA and one-hour sessions.</li>
+                        <li>One security account instead of separate log-archive and tooling accounts: the first thing I'd split as it grows.</li>
+                        <li>Alerts are email only, with no SIEM.</li>
+                    </ul>
+                </section>
+
+                <section class="card" id="code">
+                    <h2>Code and full write-up</h2>
+                    <p>
+                        The Terraform for all four accounts, the runbook, and the full
+                        write-up with every test.
+                    </p>
+                    <div class="actions">
+                        <a class="btn btn-primary" href="https://github.com/nojus11/aws-org-hardening">View on GitHub →</a>
+                    </div>
+                </section>
+
+                <div class="actions">
+                    <a class="btn" href="/projects.html">← All projects</a>
+                </div>
+            </main>
+        </div>
+
+        <div class="container">
+            <footer>© 2026 Nojus Niuklys</footer>
+        </div>
+    </body>
+</html>
